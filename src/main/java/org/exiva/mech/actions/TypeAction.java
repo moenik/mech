@@ -12,7 +12,7 @@ public class TypeAction extends Action{
 	Robot robot;
 	
 	public TypeAction(String actionName, String textToType) throws AWTException {
-		super(actionName);
+		super(actionName, "TypeAction");
 		this.textToType=textToType;
 		this.robot = new Robot();
 	}

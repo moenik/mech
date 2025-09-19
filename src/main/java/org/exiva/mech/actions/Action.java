@@ -8,14 +8,18 @@ import org.exiva.mech.interfaces.IAction;
 public class Action implements IAction{
 
 	private String actionName;
+	private String actionType;
 	private ActionStatus status;
+	private String statusMessage;
 	private Vector<IAction> nextActions;
 	
 	
-	public Action(String actionName) {
+	public Action(String actionName, String type) {
 		this.actionName=actionName;
+		this.actionType=type;
 		this.nextActions = new Vector<IAction>();
-		this.status = ActionStatus.READY;
+		this.setStatus(ActionStatus.READY);
+		this.setStatusMessage("");
 	}
 	
 	@Override
@@ -24,11 +28,24 @@ public class Action implements IAction{
 	}
 
 	@Override
+	public String getActionType() {
+		return this.actionType;
+	}
+	
+	@Override
 	public ActionStatus getStatus() {
 		return this.status;
 	}
 	public void setStatus(ActionStatus status) {
 		this.status = status;
+	}
+	
+	public void setStatusMessage(String message) {
+		this.statusMessage=message;
+	}
+	@Override
+	public String getStatusMessage() {
+		return this.statusMessage;
 	}
 
 	@Override
@@ -102,7 +119,6 @@ public class Action implements IAction{
 		this.callNext();
 		setStatus(ActionStatus.ENDED);
 		setStatus(ActionStatus.READY);
-	}
-	
+	}	
 
 }
