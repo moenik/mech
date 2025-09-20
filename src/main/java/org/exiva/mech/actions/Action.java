@@ -1,9 +1,11 @@
 package org.exiva.mech.actions;
 
+import java.util.Collection;
 import java.util.Vector;
 
 import org.exiva.mech.interfaces.ActionStatus;
 import org.exiva.mech.interfaces.IAction;
+import org.exiva.mech.interfaces.IActionListener;
 
 public class Action implements IAction{
 
@@ -11,14 +13,15 @@ public class Action implements IAction{
 	private String actionType;
 	private ActionStatus status;
 	private String statusMessage;
-	private Vector<IAction> nextActions;
-	
+	private Collection<IAction> nextActions;
+	private Collection<IActionListener> listeners;
 	
 	public Action(String actionName, String type) {
 		this.actionName=actionName;
 		this.actionType=type;
 		this.nextActions = new Vector<IAction>();
-		this.setStatus(ActionStatus.READY);
+		this.listeners = new Vector<IActionListener>();
+		this.setStatus(actionName.equals("AWAYS_STOPPED")?ActionStatus.STOPPED:ActionStatus.READY);
 		this.setStatusMessage("");
 	}
 	
@@ -38,10 +41,16 @@ public class Action implements IAction{
 	}
 	public void setStatus(ActionStatus status) {
 		this.status = status;
+		for (IActionListener iActionListener : listeners) {
+			iActionListener.updatedStatus(status);
+		}
 	}
 	
 	public void setStatusMessage(String message) {
 		this.statusMessage=message;
+		for (IActionListener iActionListener : listeners) {
+			iActionListener.updatedMessage(message);
+		}
 	}
 	@Override
 	public String getStatusMessage() {
@@ -49,8 +58,8 @@ public class Action implements IAction{
 	}
 
 	@Override
-	public void addNextActions(IAction action) {
-		this.nextActions.add(action);
+	public Boolean addNextActions(IAction action) {
+		return this.nextActions.add(action);
 	}
 
 	@Override
@@ -59,8 +68,21 @@ public class Action implements IAction{
 	}
 
 	@Override
-	public Vector<IAction> getNextActions() {
+	public Collection<IAction> getNextActions() {
 		return this.nextActions;
+	}
+	
+	@Override
+	public Boolean addActionListener(IActionListener listener) {
+		return this.listeners.add(listener);
+	}
+	@Override
+	public Boolean removeActionListener(IActionListener listener) {
+		return this.listeners.remove(listener);
+	}
+	@Override
+	public Collection<IActionListener> getActionsListeners(){
+		return this.listeners;
 	}
 
 	@Override
@@ -102,18 +124,24 @@ public class Action implements IAction{
 	}
 	
 	protected void callNext() {
-		for (int i = 0; i < this.getNextActions().size(); i++) {
-			if(this.getNextActions().get(i).getStatus()==ActionStatus.READY) {
-				this.getNextActions().get(i).startAction();
+
+		IAction nextActions[] = new IAction[this.getNextActions().size()];
+		this.getNextActions().toArray(nextActions);
+		
+		for (int i = 0; i < nextActions.length; i++) {
+			this.setStatusMessage(this.getActionName()+"("+this.getStatus().toString()+") -> Calling "+ nextActions[i].getActionName()+"("+nextActions[i].getStatus().toString()+")");
+			if(nextActions[i].getStatus()==ActionStatus.READY) {
+				nextActions[i].startAction();
 			}else {
 				i--;
-			}
+			}			
 		}
 	}
 	
 	@Override
 	public void run() {
 		setStatus(ActionStatus.RUNNING);
+		try { Thread.sleep(2000); } catch (InterruptedException e) { }
 		setStatus(ActionStatus.FINISHED);
 		setStatus(ActionStatus.CALLING_NEXT);
 		this.callNext();

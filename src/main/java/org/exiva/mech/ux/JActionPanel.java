@@ -1,6 +1,8 @@
 package org.exiva.mech.ux;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -8,19 +10,23 @@ import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 import javax.swing.border.LineBorder;
 
+import org.exiva.mech.interfaces.ActionStatus;
 import org.exiva.mech.interfaces.IAction;
+import org.exiva.mech.interfaces.IActionListener;
 
-public class JActionPanel extends JPanel{
+public class JActionPanel extends JPanel implements IActionListener{
 
 	private static final long serialVersionUID = 1L;
 
 	private IAction action;
 	
 	public JActionPanel(IAction action) {
+		if(action==null) throw new NullPointerException("action is null");
 		this.action = action;		
+		this.action.addActionListener(this);
 		this.setupComponents();
+		this.setupEvents();
 	}
-	
 	
 	private JLabel  lblActionNameType;
 	private JLabel  lblActionStatusMessage;
@@ -35,7 +41,6 @@ public class JActionPanel extends JPanel{
 		this.setLayout(sl);
 		lblActionNameType = new JLabel("("+this.action.getActionType() + ") - " + this.action.getActionName());
 		lblActionStatusMessage = new JLabel("("+action.getStatus().toString()+") -" + this.action.getStatusMessage());
-		//this.setMinimumSize(new Dimension(798, 50));
 		
 		this.add(lblActionNameType);
 		this.add(lblActionStatusMessage);
@@ -70,6 +75,26 @@ public class JActionPanel extends JPanel{
 		sl.putConstraint(SpringLayout.EAST, btnConfigs, 0, SpringLayout.EAST, this);
 		sl.putConstraint(SpringLayout.WEST, btnConfigs, -50, SpringLayout.EAST, btnConfigs);
 		
+	}
+	
+	private void setupEvents() {
+		this.btnStartPause.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JActionPanel.this.action.startAction();
+			}
+		});
+	}
+
+	@Override
+	public void updatedStatus(ActionStatus status) {
+		lblActionStatusMessage.setText("("+action.getStatus().toString()+") -" + this.action.getStatusMessage());
+	}
+
+	@Override
+	public void updatedMessage(String message) {
+		lblActionStatusMessage.setText("("+action.getStatus().toString()+") -" + this.action.getStatusMessage());
 	}
 	
 }

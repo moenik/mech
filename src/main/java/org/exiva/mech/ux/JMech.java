@@ -9,7 +9,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.SpringLayout;
 
-import org.exiva.mech.actions.TypeAction;
+import org.exiva.mech.actions.Action;
 
 public class JMech extends JFrame{
 
@@ -24,6 +24,7 @@ public class JMech extends JFrame{
 		this.setTitle("MECH - The Mechanic");
 		
 		this.setupComponents();
+//		this.setupEvents();
 		
 		this.setVisible(true);
 	}
@@ -52,7 +53,7 @@ public class JMech extends JFrame{
 		sl.putConstraint(SpringLayout.WEST, menubar, 0, SpringLayout.WEST, cp);
 		sl.putConstraint(SpringLayout.EAST, menubar, 0, SpringLayout.EAST, cp);
 		
-		JActionPanel ap = new JActionPanel(new TypeAction("type", "text"));
+		JActionPanel ap = new JActionPanel(new Action("clara", "Default"));
 		sl.putConstraint(SpringLayout.NORTH, ap, 0, SpringLayout.SOUTH, menubar);
 		sl.putConstraint(SpringLayout.SOUTH, ap,40, SpringLayout.NORTH, ap);
 		sl.putConstraint(SpringLayout.WEST, ap, 2, SpringLayout.WEST, cp);
@@ -62,5 +63,8 @@ public class JMech extends JFrame{
 		cp.add(ap);
 		
 	}
+	
+	
+
 	
 }
