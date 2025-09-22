@@ -93,7 +93,7 @@ public class Action implements IAction{
 		case READY:
 			new Thread(this).start();
 		default:
-			this.status=ActionStatus.RUNNING;
+			setStatus(ActionStatus.RUNNING);
 			break;
 		}
 	}
@@ -104,7 +104,7 @@ public class Action implements IAction{
 		case RUNNING:
 		case CALLING_NEXT:
 		case PAUSED:
-			this.status=ActionStatus.STOPPED;
+			setStatus(ActionStatus.STOPPED);
 			break;
 		default:
 			break;
@@ -116,7 +116,7 @@ public class Action implements IAction{
 		switch (this.status) {
 		case RUNNING:
 		case CALLING_NEXT:
-			this.status=ActionStatus.PAUSED;
+			setStatus(ActionStatus.PAUSED);
 			break;
 		default:
 			break;
@@ -127,10 +127,11 @@ public class Action implements IAction{
 
 		IAction nextActions[] = new IAction[this.getNextActions().size()];
 		this.getNextActions().toArray(nextActions);
-		
+		//try { Thread.sleep(2000); } catch (InterruptedException e) { }
 		for (int i = 0; i < nextActions.length; i++) {
 			this.setStatusMessage(this.getActionName()+"("+this.getStatus().toString()+") -> Calling "+ nextActions[i].getActionName()+"("+nextActions[i].getStatus().toString()+")");
-			if(nextActions[i].getStatus()==ActionStatus.READY) {
+			//try { Thread.sleep(1000); } catch (InterruptedException e) { }
+			if(nextActions[i].getStatus()==ActionStatus.READY || nextActions[i].getStatus()==ActionStatus.STOPPED ) {
 				nextActions[i].startAction();
 			}else {
 				i--;
@@ -141,10 +142,16 @@ public class Action implements IAction{
 	@Override
 	public void run() {
 		setStatus(ActionStatus.RUNNING);
-		try { Thread.sleep(2000); } catch (InterruptedException e) { }
+		setStatusMessage("delay 1000ms");
+		try { Thread.sleep(1000); } catch (InterruptedException e) { }
+		if(this.getStatus()==ActionStatus.STOPPED) {
+			setStatusMessage("Stopped");
+			return;
+		}
 		setStatus(ActionStatus.FINISHED);
 		setStatus(ActionStatus.CALLING_NEXT);
 		this.callNext();
+		setStatusMessage("");
 		setStatus(ActionStatus.ENDED);
 		setStatus(ActionStatus.READY);
 	}	

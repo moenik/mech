@@ -19,6 +19,9 @@ public class JActionPanel extends JPanel implements IActionListener{
 	private static final long serialVersionUID = 1L;
 
 	private IAction action;
+	public IAction getAction() {
+		return this.action;
+	}
 	
 	public JActionPanel(IAction action) {
 		if(action==null) throw new NullPointerException("action is null");
@@ -31,7 +34,7 @@ public class JActionPanel extends JPanel implements IActionListener{
 	private JLabel  lblActionNameType;
 	private JLabel  lblActionStatusMessage;
 	
-	private JButton btnStartPause = new JButton("▶⏸");
+	private JButton btnStartPause = new JButton("▶");
 	private JButton btnStop = new JButton("⏹");
 	private JButton btnConfigs = new JButton("⚙");
 	
@@ -40,7 +43,7 @@ public class JActionPanel extends JPanel implements IActionListener{
 		SpringLayout sl = new SpringLayout();		
 		this.setLayout(sl);
 		lblActionNameType = new JLabel("("+this.action.getActionType() + ") - " + this.action.getActionName());
-		lblActionStatusMessage = new JLabel("("+action.getStatus().toString()+") -" + this.action.getStatusMessage());
+		lblActionStatusMessage = new JLabel("");
 		
 		this.add(lblActionNameType);
 		this.add(lblActionStatusMessage);
@@ -79,10 +82,16 @@ public class JActionPanel extends JPanel implements IActionListener{
 	
 	private void setupEvents() {
 		this.btnStartPause.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JActionPanel.this.action.startAction();
+			}
+		});
+		
+		this.btnStop.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JActionPanel.this.action.stopAction();
 			}
 		});
 	}
@@ -90,6 +99,16 @@ public class JActionPanel extends JPanel implements IActionListener{
 	@Override
 	public void updatedStatus(ActionStatus status) {
 		lblActionStatusMessage.setText("("+action.getStatus().toString()+") -" + this.action.getStatusMessage());
+		switch (status) {
+		case READY:
+		case STOPPED:
+			btnStartPause.setText("▶");
+			break;
+
+		default:
+			btnStartPause.setText("⏸");
+			break;
+		}
 	}
 
 	@Override

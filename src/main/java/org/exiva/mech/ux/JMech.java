@@ -59,8 +59,18 @@ public class JMech extends JFrame{
 		sl.putConstraint(SpringLayout.WEST, ap, 2, SpringLayout.WEST, cp);
 		sl.putConstraint(SpringLayout.EAST, ap, -2, SpringLayout.EAST, cp);
 		
+		JActionPanel ap2 = new JActionPanel(new Action("clara", "Default"));
+		sl.putConstraint(SpringLayout.NORTH, ap2, 0, SpringLayout.SOUTH, ap);
+		sl.putConstraint(SpringLayout.SOUTH, ap2,40, SpringLayout.NORTH, ap2);
+		sl.putConstraint(SpringLayout.WEST, ap2, 2, SpringLayout.WEST, cp);
+		sl.putConstraint(SpringLayout.EAST, ap2, -2, SpringLayout.EAST, cp);
+		
 		cp.add(menubar);
 		cp.add(ap);
+		cp.add(ap2);
+		
+		ap.getAction().addNextActions(ap2.getAction());
+		ap2.getAction().addNextActions(ap.getAction());
 		
 	}
 	
