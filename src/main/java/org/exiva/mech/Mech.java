@@ -2,20 +2,18 @@ package org.exiva.mech;
 
 import java.awt.AWTException;
 
-import org.exiva.mech.actions.Action;
 import org.exiva.mech.ux.JMech;
 
 public class Mech {
 	public static void main(String[] args) throws AWTException {
-		
-		Action a = new Action("BATATA", "Default");
-		Action b = new Action("AWAYS_STOPPED", "Default");
-		a.addNextActions(b);
-		
-		//a.startAction();
-		
-		
 		new JMech();
+		
+//		Action a = new Action("BATATA", "Default");
+//		Action b = new Action("AWAYS_STOPPED", "Default");
+//		a.addNextActions(b);
+//		
+//		a.startAction();
+//
 //		try {
 //			System.out.println("batata");
 //			IAction a = new TypeAction("typooo..",	"The irish\n");

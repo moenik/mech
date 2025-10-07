@@ -2,10 +2,22 @@ package org.exiva.mech.interfaces;
 
 import java.util.Collection;
 
+/**
+ * 
+ */
 public interface IAction extends Runnable{
 	
+	/**
+	 * @return the action name
+	 */
 	public String getActionName();
+	/**
+	 * @return the action type
+	 */
 	public String getActionType();
+	/**
+	 * @return {@link ActionStatus} - the actual status
+	 */
 	public ActionStatus getStatus();
 	public String getStatusMessage();
 	

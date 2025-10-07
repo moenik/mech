@@ -1,6 +1,7 @@
 package org.exiva.mech.ux;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -27,6 +28,9 @@ public class JActionPanel extends JPanel implements IActionListener{
 		if(action==null) throw new NullPointerException("action is null");
 		this.action = action;		
 		this.action.addActionListener(this);
+		this.setMinimumSize(new Dimension(400, 40));
+		this.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+		this.setPreferredSize(getMinimumSize());		
 		this.setupComponents();
 		this.setupEvents();
 	}
@@ -98,7 +102,7 @@ public class JActionPanel extends JPanel implements IActionListener{
 
 	@Override
 	public void updatedStatus(ActionStatus status) {
-		lblActionStatusMessage.setText("("+action.getStatus().toString()+") -" + this.action.getStatusMessage());
+		this.updatedMessage(this.action.getStatusMessage());
 		switch (status) {
 		case READY:
 		case STOPPED:
@@ -113,7 +117,7 @@ public class JActionPanel extends JPanel implements IActionListener{
 
 	@Override
 	public void updatedMessage(String message) {
-		lblActionStatusMessage.setText("("+action.getStatus().toString()+") -" + this.action.getStatusMessage());
+		lblActionStatusMessage.setText("("+action.getStatus().toString()+") -" + message);
 	}
 	
 }

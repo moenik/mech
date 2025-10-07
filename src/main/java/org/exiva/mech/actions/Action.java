@@ -16,9 +16,14 @@ public class Action implements IAction{
 	private Collection<IAction> nextActions;
 	private Collection<IActionListener> listeners;
 	
-	public Action(String actionName, String type) {
+	/**
+	 * Creates an action
+	 * @param actionName - the action name
+	 * @param actionType - the action type
+	 */
+	public Action(String actionName, String actionType) {
 		this.actionName=actionName;
-		this.actionType=type;
+		this.actionType=actionType;
 		this.nextActions = new Vector<IAction>();
 		this.listeners = new Vector<IActionListener>();
 		this.setStatus(actionName.equals("AWAYS_STOPPED")?ActionStatus.STOPPED:ActionStatus.READY);
@@ -127,10 +132,8 @@ public class Action implements IAction{
 
 		IAction nextActions[] = new IAction[this.getNextActions().size()];
 		this.getNextActions().toArray(nextActions);
-		//try { Thread.sleep(2000); } catch (InterruptedException e) { }
 		for (int i = 0; i < nextActions.length; i++) {
 			this.setStatusMessage(this.getActionName()+"("+this.getStatus().toString()+") -> Calling "+ nextActions[i].getActionName()+"("+nextActions[i].getStatus().toString()+")");
-			//try { Thread.sleep(1000); } catch (InterruptedException e) { }
 			if(nextActions[i].getStatus()==ActionStatus.READY || nextActions[i].getStatus()==ActionStatus.STOPPED ) {
 				nextActions[i].startAction();
 			}else {
