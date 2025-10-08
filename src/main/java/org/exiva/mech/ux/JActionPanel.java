@@ -110,7 +110,7 @@ public class JActionPanel extends JPanel implements IActionListener{
 			break;
 
 		default:
-			btnStartPause.setText("⏸");
+			btnStartPause.setText("❚❚");
 			break;
 		}
 	}

@@ -1,5 +1,21 @@
 package org.exiva.mech.interfaces;
 
+/**
+*		[READY]        --> [RUNNING]</br>
+*		[RUNNING]      --> [FINISHED]</br>
+*		[RUNNING]      --> [STOPPED]</br>
+*		[RUNNING]      --> [PAUSED]</br>
+*		[PAUSED]       --> [RUNNING]</br>
+*		[STOPPED]      --> [READY]</br>
+*		[FINISHED]     --> [CALLING_NEXT]</br>
+*		[CALLING_NEXT] --> [ENDED]</br>
+*		[CALLING_NEXT] --> [PAUSED']</br>
+*		[PAUSED']      --> [CALLING_NEXT]</br>
+*		[CALLING_NEXT] --> [STOPPED]</br>
+*		[PAUSED]       --> [STOPPED]</br>
+*		[PAUSED']      --> [STOPPED]</br>
+*		[ENDED]        --> [READY]</br>
+ */
 public enum ActionStatus {
 	READY,
 	RUNNING,
@@ -10,7 +26,6 @@ public enum ActionStatus {
 	ENDED
 	
 	/**
-	
 	@startuml
 		[READY] --> [RUNNING]
 		[RUNNING] --> [FINISHED]

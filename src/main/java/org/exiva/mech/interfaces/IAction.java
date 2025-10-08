@@ -19,18 +19,52 @@ public interface IAction extends Runnable{
 	 * @return {@link ActionStatus} - the actual status
 	 */
 	public ActionStatus getStatus();
+	/**
+	 * @return the current Status message
+	 */
 	public String getStatusMessage();
 	
+	/**
+	 * @param action - the action to be added
+	 * @return true if OK
+	 */
 	public Boolean addNextActions(IAction action);
+	/**
+	 * @param action - the action to be removed
+	 * @return true if OK
+	 */
 	public Boolean removeNextActions(IAction action);
+	/**
+	 * @return list of next Actions to run - {@link Collection}<{@link IAction}>
+	 */
 	public Collection<IAction> getNextActions(); 
 	
+	/**
+	 * @param listener - {@link IActionListener}
+	 * @return True if added
+	 */
 	public Boolean addActionListener(IActionListener listener);
+	/**
+	 * @param listener - {@link IActionListener}
+	 * @return True if removed
+	 */
 	public Boolean removeActionListener(IActionListener listener);
+	/**
+	 * @return all listeners - {@link Collection}<{@link IActionListener}>
+	 */
 	public Collection<IActionListener> getActionsListeners(); 
 	
+	/**
+	 * Start action - see {@link ActionStatus}
+	 */
 	public void startAction();
+	/**
+	 * Stop action - see {@link ActionStatus}
+	 */
 	public void stopAction();
+	/**
+	 * Pause action - see {@link ActionStatus}
+	 */
 	public void pauseAction();
 	
 	

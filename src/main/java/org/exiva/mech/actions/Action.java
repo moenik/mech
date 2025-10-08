@@ -7,6 +7,10 @@ import org.exiva.mech.interfaces.ActionStatus;
 import org.exiva.mech.interfaces.IAction;
 import org.exiva.mech.interfaces.IActionListener;
 
+/**
+ * The default action, every other action can be extended from this class and override run method.</br>
+ * It implements {@link IAction} whith default values and works as a delay of 1 second.
+ */
 public class Action implements IAction{
 
 	private String actionName;
@@ -44,6 +48,11 @@ public class Action implements IAction{
 	public ActionStatus getStatus() {
 		return this.status;
 	}
+	/**
+	 * Update the status of action<br>
+	 * The listeners will be triggered
+	 * @param status - {@link ActionStatus} status to be changed
+	 */
 	public void setStatus(ActionStatus status) {
 		this.status = status;
 		for (IActionListener iActionListener : listeners) {
@@ -51,6 +60,11 @@ public class Action implements IAction{
 		}
 	}
 	
+	/**
+	 * Update the message of action<br>
+	 * The listeners will be triggered
+	 * @param message - message to be changed
+	 */
 	public void setStatusMessage(String message) {
 		this.statusMessage=message;
 		for (IActionListener iActionListener : listeners) {
@@ -128,6 +142,9 @@ public class Action implements IAction{
 		}
 	}
 	
+	/**
+	 * Call next actions, one at a time, wait to start when is ready/stopped
+	 */
 	protected void callNext() {
 
 		IAction nextActions[] = new IAction[this.getNextActions().size()];
