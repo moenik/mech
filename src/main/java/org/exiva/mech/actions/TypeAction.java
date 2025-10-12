@@ -17,11 +17,8 @@ public class TypeAction extends Action{
 		this.robot = new Robot();
 	}
 	
-	private int batata = 10;
 	@Override
 	public void run() {
-		if(batata<=0) return;
-		batata--;
 		this.setStatus(ActionStatus.RUNNING);
 		this.setStatusMessage("typing");
 		type(textToType);
