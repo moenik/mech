@@ -25,13 +25,21 @@ public class Action implements IAction{
 	 * @param actionName - the action name
 	 * @param actionType - the action type
 	 */
-	public Action(String actionName, String actionType) {
+	protected Action(String actionName, String actionType) {
 		this.actionName=actionName;
 		this.actionType=actionType;
 		this.nextActions = new Vector<IAction>();
 		this.listeners = new Vector<IActionListener>();
 		this.setStatus(actionName.equals("AWAYS_STOPPED")?ActionStatus.STOPPED:ActionStatus.READY);
 		this.setStatusMessage("");
+	}
+	
+	/**
+	 * Creates an action
+	 * @param actionName - the action name
+	 */
+	public Action(String actionName) {
+		this(actionName, "DefaultAction");
 	}
 	
 	@Override
@@ -111,8 +119,9 @@ public class Action implements IAction{
 			break;
 		case READY:
 			new Thread(this).start();
-		default:
+		case PAUSED:
 			setStatus(ActionStatus.RUNNING);
+		default:
 			break;
 		}
 	}

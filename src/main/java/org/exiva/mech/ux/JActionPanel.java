@@ -52,7 +52,6 @@ public class JActionPanel extends JPanel implements IActionListener{
 		this.add(lblActionNameType);
 		this.add(lblActionStatusMessage);
 
-		
 		sl.putConstraint(SpringLayout.NORTH, lblActionNameType, 0, SpringLayout.NORTH, this);
 		sl.putConstraint(SpringLayout.SOUTH, lblActionNameType, 20, SpringLayout.NORTH, lblActionNameType);
 		sl.putConstraint(SpringLayout.EAST, lblActionNameType, 0, SpringLayout.WEST, btnStartPause);
@@ -80,8 +79,7 @@ public class JActionPanel extends JPanel implements IActionListener{
 		sl.putConstraint(SpringLayout.NORTH, btnConfigs, 0, SpringLayout.NORTH, this);
 		sl.putConstraint(SpringLayout.SOUTH, btnConfigs, 0, SpringLayout.SOUTH, this);
 		sl.putConstraint(SpringLayout.EAST, btnConfigs, 0, SpringLayout.EAST, this);
-		sl.putConstraint(SpringLayout.WEST, btnConfigs, -50, SpringLayout.EAST, btnConfigs);
-		
+		sl.putConstraint(SpringLayout.WEST, btnConfigs, -50, SpringLayout.EAST, btnConfigs);	
 	}
 	
 	private void setupEvents() {
@@ -98,6 +96,12 @@ public class JActionPanel extends JPanel implements IActionListener{
 				JActionPanel.this.action.stopAction();
 			}
 		});
+		this.btnConfigs.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new JActionConfig(JActionPanel.this.action);
+			}
+		});
 	}
 
 	@Override
@@ -108,7 +112,6 @@ public class JActionPanel extends JPanel implements IActionListener{
 		case STOPPED:
 			btnStartPause.setText("▶");
 			break;
-
 		default:
 			btnStartPause.setText("❚❚");
 			break;

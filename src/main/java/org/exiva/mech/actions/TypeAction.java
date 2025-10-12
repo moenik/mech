@@ -23,11 +23,17 @@ public class TypeAction extends Action{
 		if(batata<=0) return;
 		batata--;
 		this.setStatus(ActionStatus.RUNNING);
+		this.setStatusMessage("typing");
 		type(textToType);
+		if(this.getStatus()==ActionStatus.STOPPED) {
+			this.setStatus(ActionStatus.READY);
+			return;
+        }
 		this.setStatus(ActionStatus.FINISHED);
 		this.setStatus(ActionStatus.CALLING_NEXT);
 		this.callNext();
 		this.setStatus(ActionStatus.ENDED);
+		this.setStatusMessage("");
 		this.setStatus(ActionStatus.READY);
 	}
 	
@@ -35,7 +41,13 @@ public class TypeAction extends Action{
         int length = characters.length();
         for (int i = 0; i < length; i++) {
             char character = characters.charAt(i);
+            if(this.getStatus()==ActionStatus.PAUSED) {
+            	try { Thread.sleep(100); } catch (InterruptedException e) { }
+            }
             type(character);
+            if(this.getStatus()==ActionStatus.STOPPED) {
+            	return;
+            }
         }
     }
 
