@@ -45,10 +45,10 @@ public class JActionScroll extends JScrollPane{
 				try {
 					switch (a) {
 					case 0:
-						JActionScroll.this.add(new Action("Delay 1000ms"));
+						JActionScroll.this.add(new Action(null));
 						break;
 					case 1:						
-						JActionScroll.this.add(new TypeAction("Type something", "something"));
+						JActionScroll.this.add(new TypeAction(null, "something"));
 						break;
 					default:
 						break;

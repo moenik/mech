@@ -6,6 +6,7 @@ import java.util.Vector;
 import org.exiva.mech.interfaces.ActionStatus;
 import org.exiva.mech.interfaces.IAction;
 import org.exiva.mech.interfaces.IActionListener;
+import org.exiva.mech.utils.Words;
 
 /**
  * The default action, every other action can be extended from this class and override run method.</br>
@@ -26,11 +27,11 @@ public class Action implements IAction{
 	 * @param actionType - the action type
 	 */
 	protected Action(String actionName, String actionType) {
-		this.actionName=actionName;
+		this.actionName=actionName==null?Words.randomAdjective()+"_"+Words.randomNoun():actionName;
 		this.actionType=actionType;
 		this.nextActions = new Vector<IAction>();
 		this.listeners = new Vector<IActionListener>();
-		this.setStatus(actionName.equals("AWAYS_STOPPED")?ActionStatus.STOPPED:ActionStatus.READY);
+		this.setStatus(this.actionName.equals("AWAYS_STOPPED")?ActionStatus.STOPPED:ActionStatus.READY);
 		this.setStatusMessage("");
 	}
 	
