@@ -3,7 +3,8 @@ package org.exiva.mech.interfaces;
 import java.util.Collection;
 
 /**
- * 
+ * Action Interface
+ * @see {@link Runnable}
  */
 public interface IAction extends Runnable{
 	
