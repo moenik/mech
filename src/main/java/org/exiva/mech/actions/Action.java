@@ -18,6 +18,7 @@ public class Action implements IAction{
 	private String actionType;
 	private ActionStatus status;
 	private String statusMessage;
+	private Collection<IAction> prevActions;
 	private Collection<IAction> nextActions;
 	private Collection<IActionListener> listeners;
 	
@@ -27,8 +28,9 @@ public class Action implements IAction{
 	 * @param actionType - the action type
 	 */
 	protected Action(String actionName, String actionType) {
-		this.actionName=actionName==null?Words.randomAdjective()+"_"+Words.randomNoun():actionName;
+		this.actionName=actionName==null?Words.randomAdjectiveNoum(null):actionName;
 		this.actionType=actionType;
+		this.prevActions = new Vector<IAction>();
 		this.nextActions = new Vector<IAction>();
 		this.listeners = new Vector<IActionListener>();
 		this.setStatus(this.actionName.equals("AWAYS_STOPPED")?ActionStatus.STOPPED:ActionStatus.READY);
@@ -80,19 +82,83 @@ public class Action implements IAction{
 			iActionListener.updatedMessage(message);
 		}
 	}
+	
 	@Override
 	public String getStatusMessage() {
 		return this.statusMessage;
 	}
-
+	
 	@Override
-	public Boolean addNextActions(IAction action) {
-		return this.nextActions.add(action);
+	public Boolean addPrevActions(IAction action, Boolean referBack) {
+		if(this.getPrevActions().contains(action)) { 
+			return false;
+		}
+		Boolean b = this.prevActions.add(action);
+		if(referBack) {
+			b = b && action.addNextActions(this, false);
+		}
+		return b;
+	}
+	
+	@Override
+	public Boolean addPrevActions(IAction action) {
+		return this.addPrevActions(action, true);
 	}
 
 	@Override
+	public Boolean removePrevActions(IAction action, Boolean referBack) {
+		if(!this.getPrevActions().contains(action)) { 
+			return false;
+		}
+		Boolean b = this.getPrevActions().remove(action);
+		if(referBack) {
+			b = b && action.removeNextActions(this,false);
+		}
+		return b;
+	}
+	
+	@Override
+	public Boolean removePrevActions(IAction action) {
+		return this.removePrevActions(action, true);
+	}
+
+	@Override
+	public Collection<IAction> getPrevActions() {
+		return this.prevActions;
+	}	
+
+	@Override
+	public Boolean addNextActions(IAction next, Boolean referBack) {
+		if(this.getNextActions().contains(next)) { 
+			return false;
+		}
+		Boolean b = this.nextActions.add(next);
+		if(referBack) {
+			next.addPrevActions(this, false);
+		}
+		return b;
+	}
+	
+	@Override
+	public Boolean addNextActions(IAction action) {
+		return addNextActions(action, true);
+	}
+
+	@Override
+	public Boolean removeNextActions(IAction action, Boolean referBack) {
+		if(!this.getNextActions().contains(action)) {
+			return false;
+		}
+		Boolean b = this.getNextActions().remove(action);
+		if(referBack) {
+			b = b && action.removePrevActions(this, false);
+		}
+		return b;
+	}
+	
+	@Override
 	public Boolean removeNextActions(IAction action) {
-		return this.nextActions.remove(action);
+		return this.removeNextActions(action, true);
 	}
 
 	@Override
@@ -184,6 +250,10 @@ public class Action implements IAction{
 		setStatusMessage("");
 		setStatus(ActionStatus.ENDED);
 		setStatus(ActionStatus.READY);
-	}	
+	}
+
+	
+
+	
 
 }

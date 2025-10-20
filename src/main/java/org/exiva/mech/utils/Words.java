@@ -1277,4 +1277,9 @@ public class Words {
 				, "championship"};
 		return nouns[new Random().nextInt(nouns.length)];
 	}
+
+	public static String randomAdjectiveNoum(String separator) {
+		return randomAdjective()+(separator==null?"_":separator)+randomNoun();
+	}
+
 }
