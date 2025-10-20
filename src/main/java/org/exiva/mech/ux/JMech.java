@@ -9,8 +9,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.SpringLayout;
 
-import org.exiva.mech.actions.Action;
-
 public class JMech extends JFrame{
 
 	private static final long serialVersionUID = 1L;
@@ -20,12 +18,9 @@ public class JMech extends JFrame{
 		this.setMinimumSize(getSize());
 		this.setPreferredSize(getSize());
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		
 		this.setTitle("MECH - The Mechanic");
 		
-		this.setupComponents();
-//		this.setupEvents();
-		
+		this.setupComponents();	
 		this.setVisible(true);
 	}
 
@@ -61,26 +56,5 @@ public class JMech extends JFrame{
 			
 		cp.add(menubar);
 		cp.add(jas);
-		
-//		jas.add(new Action("action0", "Default"));
-//		jas.add(new Action("action1", "Default"));
-//		jas.add(new Action("action2", "Default"));
-//		jas.add(new Action("action3", "Default"));
-//		jas.add(new Action("action4", "Default"));
-//		jas.add(new Action("action5", "Default"));
-//		jas.add(new Action("action6", "Default"));
-//		jas.add(new Action("action7", "Default"));
-//		jas.add(new Action("action8", "Default"));
-//		jas.add(new Action("action9", "Default"));
-//		jas.add(new Action("action11", "Default"));
-//		jas.add(new Action("action12", "Default"));
-//		jas.add(new Action("action13", "Default"));
-//		jas.add(new Action("action14", "Default"));
-//		jas.add(new Action("action15", "Default"));
-//		jas.add(new Action("action16", "Default"));
-//		jas.add(new Action("action17", "Default"));
-//		jas.add(new Action("action18", "Default"));
-//		jas.add(new Action("action19", "Default"));
-		
 	}	
 }

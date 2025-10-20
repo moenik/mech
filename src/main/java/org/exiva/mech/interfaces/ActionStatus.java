@@ -15,6 +15,10 @@ package org.exiva.mech.interfaces;
 *		[PAUSED]       --> [STOPPED]</br>
 *		[PAUSED']      --> [STOPPED]</br>
 *		[ENDED]        --> [READY]</br>
+*
+* @author moenik
+* @see {@link IAction}
+* 
  */
 public enum ActionStatus {
 	READY,

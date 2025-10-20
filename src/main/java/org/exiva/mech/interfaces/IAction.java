@@ -3,7 +3,14 @@ package org.exiva.mech.interfaces;
 import java.util.Collection;
 
 /**
- * Action Interface
+ * Action Interface 
+ * An Action is a Runnable task that can be started, stopped, and paused.
+ * It maintains a status and can notify listeners about status changes.
+ * It can also have dependencies on other actions, allowing for complex workflows.
+ * @author moenik
+ *  
+ * @see {@link ActionStatus}
+ * @see {@link IActionListener}
  * @see {@link Runnable}
  */
 public interface IAction extends Runnable{

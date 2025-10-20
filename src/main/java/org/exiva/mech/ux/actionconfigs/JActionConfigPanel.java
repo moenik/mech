@@ -23,7 +23,6 @@ public class JActionConfigPanel extends JPanel implements IActionListener{
 	public JActionConfigPanel(IAction action) {
 		this.action = action;
 		
-		
 		layout = new SpringLayout();
 		this.setLayout(layout);
 		
