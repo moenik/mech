@@ -64,7 +64,7 @@ public class JActionScroll extends JScrollPane{
 	}
 	
 	public boolean add(IAction iAction) {
-		JActionPanel aPanel = new JActionPanel(iAction, this);
+		JActionPanel aPanel = new JActionPanel(iAction);
 		this.actionPanel.remove(btnAddAction);
 		
 		if(!this.actions.isEmpty()) {
@@ -76,10 +76,5 @@ public class JActionScroll extends JScrollPane{
 		this.actionPanel.add(btnAddAction);
 		this.updateUI();
 		return true;
-	}
-
-	public void deleteActionPanel(JActionPanel jActionPanel) {
-		this.actionPanel.remove(jActionPanel);
-		this.updateUI();
 	}
 }

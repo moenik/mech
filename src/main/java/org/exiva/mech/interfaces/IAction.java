@@ -115,15 +115,6 @@ public interface IAction extends Runnable{
 	 * Pause action - see {@link ActionStatus}
 	 */
 	public void pauseAction();
-	/**
-	 * Delete action - clean up resources
-	 * @param moveReferences - if true adjust references from prev and next actions
-	 */
-	public void delete(Boolean adjustReferences);
-	/**
-	 * Delete action - clean up resources
-	 */
-	public void delete();
 	
 	
 	

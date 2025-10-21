@@ -20,16 +20,12 @@ public class JActionPanel extends JPanel implements IActionListener{
 
 	private static final long serialVersionUID = 1L;
 
-	private JActionScroll parent;
-	
 	private IAction action;
-	
 	public IAction getAction() {
 		return this.action;
 	}
 	
-	public JActionPanel(IAction action, JActionScroll parent) {
-		this.parent = parent;
+	public JActionPanel(IAction action) {
 		if(action==null) throw new NullPointerException("action is null");
 		this.action = action;		
 		this.action.addActionListener(this);
@@ -150,10 +146,7 @@ public class JActionPanel extends JPanel implements IActionListener{
 			public void actionPerformed(ActionEvent e) {
 				int r = JOptionPane.showConfirmDialog(JActionPanel.this, "Confirm Delete?", "Delete Action", JOptionPane.YES_NO_OPTION);
 				if(r==JOptionPane.YES_OPTION) {
-					if(JActionPanel.this.parent!=null) {
-						JActionPanel.this.parent.deleteActionPanel(JActionPanel.this);
-					}
-					JActionPanel.this.action.delete();
+					System.out.println(r);
 				}
 			}
 		});
