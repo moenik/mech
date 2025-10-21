@@ -252,6 +252,25 @@ public class Action implements IAction{
 		setStatus(ActionStatus.READY);
 	}
 
+	@Override
+	public void delete(Boolean adjustReferences) {
+		if(adjustReferences) {
+			for (IAction prevAction : this.getPrevActions()) {
+				for (IAction nextAction : this.getNextActions()) {
+					prevAction.addNextActions(nextAction);
+				}
+			}
+		}
+		this.getPrevActions().clear();
+		this.getNextActions().clear();
+		
+	}
+
+	@Override
+	public void delete() {
+		this.delete(true);
+	}
+
 	
 
 	
