@@ -125,6 +125,13 @@ public interface IAction extends Runnable{
 	 */
 	public void delete();
 	
+	/**
+	 * Switch this action with another one in the workflow
+	 * @param action - {@link IAction} to switch with
+	 */
+	public void switchWith(IAction action);
+	
+	
 	
 	
 }

@@ -117,13 +117,27 @@ public class JActionPanel extends JPanel implements IActionListener{
 		this.btnUp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				btnUp.setEnabled(false);
+				if(!JActionPanel.this.action.getPrevActions().isEmpty()) {
+					IAction a = JActionPanel.this.action;
+					if(a.getPrevActions().isEmpty()) return;
+					IAction b = JActionPanel.this.action.getPrevActions().iterator().next();
+					a.switchWith(b);
+					if(JActionPanel.this.parent!=null) {
+						JActionPanel.this.parent.switchActions(JActionPanel.this.getAction(), b);
+					}
+				}
 			}
 		});
 		this.btnDw.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				btnDw.setEnabled(false);
+				IAction a = JActionPanel.this.action;
+				if(a.getNextActions().isEmpty()) return;
+				IAction b = JActionPanel.this.action.getNextActions().iterator().next();
+				a.switchWith(b);
+				if(JActionPanel.this.parent!=null) {
+					JActionPanel.this.parent.switchActions(JActionPanel.this.getAction(), b);
+				}
 			}
 		});
 		this.btnStartPause.addActionListener(new ActionListener() {

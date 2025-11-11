@@ -1,12 +1,11 @@
 package org.exiva.mech.ux;
 
 import java.awt.AWTException;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
-import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -21,13 +20,11 @@ public class JActionScroll extends JScrollPane{
 
 	private static final long serialVersionUID = 1L;
 
-	private List<JActionPanel> actions;
 	private JPanel actionPanel;
 	private JButton btnAddAction;
 	
 	public JActionScroll() {
 		super(VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_NEVER);
-		this.actions = new Vector<JActionPanel>();
 		this.actionPanel = new JPanel();
 		this.actionPanel.setLayout(new GridLayout(0, 1));
 		this.getViewport().add(actionPanel);
@@ -67,12 +64,14 @@ public class JActionScroll extends JScrollPane{
 		JActionPanel aPanel = new JActionPanel(iAction, this);
 		this.actionPanel.remove(btnAddAction);
 		
-		if(!this.actions.isEmpty()) {
-			this.actions.getLast().getAction().addNextActions(iAction);
+		//link previous action to this one if exists
+		if(this.actionPanel.getComponentCount()>0) {
+			Component c = this.actionPanel.getComponent(this.actionPanel.getComponentCount()-1);
+			if((c instanceof JActionPanel)) {
+				((JActionPanel)c).getAction().addNextActions(iAction);
+			}
 		}
-		this.actions.add(aPanel);
 		this.actionPanel.add(aPanel);
-		
 		this.actionPanel.add(btnAddAction);
 		this.updateUI();
 		return true;
@@ -81,5 +80,37 @@ public class JActionScroll extends JScrollPane{
 	public void deleteActionPanel(JActionPanel jActionPanel) {
 		this.actionPanel.remove(jActionPanel);
 		this.updateUI();
+	}
+	
+	public void switchActions(IAction a1, IAction a2) {
+		//first find the indexes of each panels
+		int i1 = -1;
+		int i2 = -1;
+		
+		for(int i=0; i<this.actionPanel.getComponentCount() && (i1<0 || i2<0); i++) {
+			Component c = this.actionPanel.getComponent(i);
+			if(c instanceof JActionPanel && ((JActionPanel)c).getAction().equals(a1)) {
+				i1 = i;
+			}
+			if(c instanceof JActionPanel && ((JActionPanel)c).getAction().equals(a2)) {
+				i2 = i;
+			}
+		}
+		if(i1<0 || i2<0) return;
+		
+		//swap actions in the action list
+		JActionPanel jp1 = (JActionPanel)this.actionPanel.getComponent(i1);
+		JActionPanel jp2 = (JActionPanel)this.actionPanel.getComponent(i2);
+		JActionPanel newjp1 = new JActionPanel(jp1.getAction(), this);
+		JActionPanel newjp2 = new JActionPanel(jp2.getAction(), this);
+
+		this.actionPanel.remove(jp1);
+		this.actionPanel.add(newjp2, i1);
+		
+		this.actionPanel.remove(jp2);
+		this.actionPanel.add(newjp1, i2);
+
+		this.updateUI();
+	
 	}
 }

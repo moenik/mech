@@ -90,7 +90,7 @@ public class Action implements IAction{
 	
 	@Override
 	public Boolean addPrevActions(IAction action, Boolean referBack) {
-		if(this.getPrevActions().contains(action)) { 
+		if(this.getPrevActions().contains(action) || action==this) { 
 			return false;
 		}
 		Boolean b = this.prevActions.add(action);
@@ -129,7 +129,7 @@ public class Action implements IAction{
 
 	@Override
 	public Boolean addNextActions(IAction next, Boolean referBack) {
-		if(this.getNextActions().contains(next)) { 
+		if(this.getNextActions().contains(next) || next==this) { 
 			return false;
 		}
 		Boolean b = this.nextActions.add(next);
@@ -260,10 +260,13 @@ public class Action implements IAction{
 					prevAction.addNextActions(nextAction);
 				}
 			}
+			while(!this.getPrevActions().isEmpty()) {
+				this.removePrevActions(this.getPrevActions().iterator().next());
+			}
+			while(!this.getNextActions().isEmpty()) {
+				this.removeNextActions(this.getNextActions().iterator().next());
+			}
 		}
-		this.getPrevActions().clear();
-		this.getNextActions().clear();
-		
 	}
 
 	@Override
@@ -271,8 +274,46 @@ public class Action implements IAction{
 		this.delete(true);
 	}
 
-	
-
-	
-
+	@Override
+	public void switchWith(IAction action) {
+		
+		Collection<IAction> thisPrev = new Vector<IAction>(this.getPrevActions());
+		Collection<IAction> thisNext = new Vector<IAction>(this.getNextActions());
+		Collection<IAction> actionPrev = new Vector<IAction>(action.getPrevActions());
+		Collection<IAction> actionNext = new Vector<IAction>(action.getNextActions());
+		
+		Boolean isPrev = false;
+		if(thisPrev.contains(action)) {
+			isPrev = true;
+		}
+		Boolean isNext = false;
+		if(thisNext.contains(action)) {
+			isNext = true;
+		}
+		
+		for (IAction prev : thisPrev) {
+			this.removePrevActions(prev);
+			action.addPrevActions(prev);
+		}
+		for (IAction next : thisNext) {
+			this.removeNextActions(next);
+			action.addNextActions(next);
+		}
+		for (IAction prev : actionPrev) {
+			action.removePrevActions(prev);
+			this.addPrevActions(prev);
+		}
+		for (IAction next : actionNext) {
+			action.removeNextActions(next);
+			this.addNextActions(next);
+		}
+		
+		if(isPrev) {
+			this.addNextActions(action);
+		}
+		if(isNext) {
+			this.addPrevActions(action);
+		}
+		
+	}
 }
