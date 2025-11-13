@@ -21,7 +21,7 @@ public class JActionConfig extends JDialog{
 		this.setSize(500,150);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setAlwaysOnTop(true);
-		this.setModal(true);
+		//this.setModal(true);
 		
 		if(this.action.getClass()==Action.class) {
 			this.add(new JActionConfigPanel(this.action));

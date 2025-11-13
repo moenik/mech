@@ -73,6 +73,7 @@ public class JActionPanel extends JPanel implements IActionListener{
 		
 		lblActionNameType = new JLabel("("+this.action.getActionType() + ") - " + this.action.getActionName());
 		lblActionStatusMessage = new JLabel("");
+		updatedMessage(this.action.getStatusMessage());
 		
 		this.add(lblActionNameType);
 		this.add(lblActionStatusMessage);
@@ -189,7 +190,7 @@ public class JActionPanel extends JPanel implements IActionListener{
 
 	@Override
 	public void updatedMessage(String message) {
-		lblActionStatusMessage.setText("("+action.getStatus().toString()+") -" + message);
+		lblActionStatusMessage.setText("("+action.getStatus().toString()+") -" + action.getStatusMessage());
 	}
 	
 }

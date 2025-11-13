@@ -2,6 +2,8 @@ package org.exiva.mech.ux;
 
 import java.awt.AWTException;
 import java.awt.Container;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -21,6 +23,7 @@ public class JMech extends JFrame{
 		this.setTitle("MECH - The Mechanic");
 		
 		this.setupComponents();	
+		this.setupEvents();
 		this.setVisible(true);
 	}
 
@@ -28,6 +31,7 @@ public class JMech extends JFrame{
 	private JMenu menuFile;
 	private JMenuItem menuFileLoad;
 	private JMenuItem menuFileSave;
+	private JMenu menuCache;
 	
 	private void setupComponents() throws AWTException {
 		menubar = new JMenuBar();
@@ -38,6 +42,9 @@ public class JMech extends JFrame{
 		menuFile.add(menuFileLoad);
 		menuFile.add(menuFileSave);
 		menubar.add(menuFile);
+		
+		menuCache = new JMenu("Cache");
+		menubar.add(menuCache);
 		
 		Container cp = this.getContentPane();
 		SpringLayout sl = new SpringLayout();
@@ -57,4 +64,23 @@ public class JMech extends JFrame{
 		cp.add(menubar);
 		cp.add(jas);
 	}	
+	
+	private void setupEvents() {
+		this.menuCache.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) { }
+			@Override
+			public void mousePressed(MouseEvent e) { }			
+			@Override
+			public void mouseExited(MouseEvent e) { }			
+			@Override
+			public void mouseEntered(MouseEvent e) { }			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new JCachePanel();
+			}
+		});
+		
+		
+	}
 }

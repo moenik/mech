@@ -168,8 +168,3 @@ public class TypeAction extends Action{
 	
 	
 }
-/*
- * 
- * 
- * 
- */
